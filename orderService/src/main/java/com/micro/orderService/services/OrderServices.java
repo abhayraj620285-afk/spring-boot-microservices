@@ -3,7 +3,6 @@ package com.micro.orderService.services;
 import com.micro.orderService.dto.Inventory;
 import com.micro.orderService.exception.MyCustomRuntimeException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

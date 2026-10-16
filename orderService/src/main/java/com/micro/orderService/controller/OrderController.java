@@ -1,6 +1,5 @@
 package com.micro.orderService.controller;
 
-import com.micro.orderService.OrderServiceApplication;
 import com.micro.orderService.services.OrderServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

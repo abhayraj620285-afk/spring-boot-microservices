@@ -1,3 +1,4 @@
+
 package com.micro.microservices.controller;
 
 import com.micro.microservices.model.Inventory;
@@ -9,13 +10,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/inventory")
 @AllArgsConstructor
 public class InventoryController {
-    public final InventoryService inventoryService;
+
+    private final InventoryService inventoryService;
+
     @GetMapping("/{productId}")
-    public Inventory checkInventory(@PathVariable Long  productId){
+    public Inventory checkInventory(@PathVariable Long productId) {
         return inventoryService.checkStock(productId);
     }
+
     @PostMapping
-    public String addProduct(@RequestBody Inventory inventory){
+    public String addProduct(@RequestBody Inventory inventory) {
         return inventoryService.addProduct(inventory);
+    }
+
+    @PutMapping("/{id}")
+    public String updateProduct(
+            @PathVariable Long id,
+            @RequestBody Inventory inventory) {
+        return inventoryService.updateProduct(id, inventory);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        return inventoryService.deleteProduct(id);
     }
 }
