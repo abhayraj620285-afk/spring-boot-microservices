@@ -1,5 +1,6 @@
 package com.micro.orderService.services;
 
+import com.micro.orderService.client.InventoryClient;
 import com.micro.orderService.dto.Inventory;
 import com.micro.orderService.exception.MyCustomRuntimeException;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,8 @@ import org.springframework.web.client.RestClient;
 public class OrderServices {
   //  private  final RestTemplate restTemplate;
     private final RestClient restClient;
-
-    public String placeOrder(Long productId){
+    private final InventoryClient inventoryClient;
+    public String placeOrder(Long productId) {
      /*
         // Rest Template Example
         String response = restTemplate.getForObject(
@@ -30,13 +31,13 @@ public class OrderServices {
                 .toEntity(Inventory.class);
         */
         // onStatus Example
-        ResponseEntity<Inventory> entity = restClient.get()
-                .uri("http://localhost:8081/inventory/{productId}", productId)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,((request, response) ->{
-                    throw new MyCustomRuntimeException(response.getStatusCode(),response.getHeaders());
-                } ))
-                .toEntity(Inventory.class);
+//        ResponseEntity<Inventory> entity = restClient.get()
+//                .uri("http://localhost:8081/inventory/{productId}", productId)
+//                .retrieve()
+//                .onStatus(HttpStatusCode::is4xxClientError,((request, response) ->{
+//                    throw new MyCustomRuntimeException(response.getStatusCode(),response.getHeaders());
+//                } ))
+//                .toEntity(Inventory.class);
 
      /*
      // Exchange Example For Demo
@@ -52,19 +53,28 @@ public class OrderServices {
                 }));*/
 
 
-        updateInventory(entity.getBody());
+//        updateInventory(entity.getBody());
+//
+//        return  entity.getBody()!=null && entity.getBody().getQuantity()>0?
+//                "Order Placed Successfully":
+//                "Product Out Of Stock";
 
-        return  entity.getBody()!=null && entity.getBody().getQuantity()>0?
-                "Order Placed Successfully":
-                "Product Out Of Stock";
+
+        Inventory inventory = inventoryClient.getInventory(productId);
+        int quantity = inventory.getQuantity();
+        updateInventory(inventory);
+        return quantity>0 ? "Order Placed Successfully" :
+                "Product not in stock";
+
     }
 
     private void updateInventory(Inventory inventory) {
         inventory.setQuantity(inventory.getQuantity()-1);
-        restClient.post()
-                .uri("http://localhost:8081/inventory")
-                .body(inventory)
-                .retrieve()
-                .toBodilessEntity();
+        inventoryClient.updateInventory(inventory);
+//        restClient.post()
+//                .uri("http://localhost:8081/inventory")
+//                .body(inventory)
+//                .retrieve()
+//                .toBodilessEntity();
     }
 }

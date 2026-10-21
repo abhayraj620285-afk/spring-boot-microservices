@@ -14,7 +14,8 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping("/{productId}")
-    public Inventory checkInventory(@PathVariable Long productId) {
+    public Inventory checkInventory(
+            @PathVariable("productId") Long productId) {
         return inventoryService.checkStock(productId);
     }
 
