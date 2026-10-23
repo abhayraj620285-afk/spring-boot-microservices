@@ -1,5 +1,5 @@
 server.port: 8081
-spring.application.name: orderService
+spring.application.name: Inventory-service
 spring.datasource.url: jdbc:postgresql://localhost:5432/orderdb
 spring.datasource.username: postgres
 spring.datasource.password:
@@ -7,3 +7,7 @@ spring.datasource.driver-class-name: org.postgresql.Driver
 
 spring.jpa.hibernate.ddl-auto: update
 spring.jpa.show-sql: true
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true

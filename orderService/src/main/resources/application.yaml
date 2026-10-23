@@ -9,4 +9,10 @@ spring.jpa.show-sql: true
 logging:
   level:
     com.micro.orderService.client: DEBUG
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+
 
