@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: apiGateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: orderService
+              uri: lb://orderService
+              predicates:
+                - Path=/order/**
+            - id: inventory-service
+              uri: lb://inventory-service
+              predicates:
+                - Path=/inventory/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 9090
