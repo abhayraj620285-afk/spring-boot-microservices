@@ -15,7 +15,9 @@ public class OrderServices {
   //  private  final RestTemplate restTemplate;
     private final RestClient restClient;
     private final InventoryClient inventoryClient;
+    private final InventoryService inventoryService;
     public String placeOrder(Long productId) {
+
      /*
         // Rest Template Example
         String response = restTemplate.getForObject(
@@ -60,7 +62,7 @@ public class OrderServices {
 //                "Product Out Of Stock";
 
 
-        Inventory inventory = inventoryClient.getInventory(productId);
+        Inventory inventory = inventoryService.getInventory(productId).join();
         int quantity = inventory.getQuantity();
         updateInventory(inventory);
         return quantity>0 ? "Order Placed Successfully" :
@@ -71,10 +73,10 @@ public class OrderServices {
     private void updateInventory(Inventory inventory) {
         inventory.setQuantity(inventory.getQuantity()-1);
         inventoryClient.updateInventory(inventory);
-//        restClient.post()
-//                .uri("http://localhost:8081/inventory")
-//                .body(inventory)
-//                .retrieve()
-//                .toBodilessEntity();
+        restClient.post()
+                .uri("http://localhost:8081/inventory")
+                .body(inventory)
+                .retrieve()
+                .toBodilessEntity();
     }
 }
